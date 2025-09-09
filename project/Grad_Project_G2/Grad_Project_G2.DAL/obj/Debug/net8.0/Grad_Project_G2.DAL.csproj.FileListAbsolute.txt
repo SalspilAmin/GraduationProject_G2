@@ -1,0 +1,11 @@
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\bin\Debug\net8.0\Grad_Project_G2.DAL.deps.json
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\bin\Debug\net8.0\Grad_Project_G2.DAL.dll
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\bin\Debug\net8.0\Grad_Project_G2.DAL.pdb
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\Grad_Project_G2.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\Grad_Project_G2.DAL.AssemblyInfoInputs.cache
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\Grad_Project_G2.DAL.AssemblyInfo.cs
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\Grad_Project_G2.DAL.csproj.CoreCompileInputs.cache
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\Grad_Project_G2.DAL.dll
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\refint\Grad_Project_G2.DAL.dll
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\Grad_Project_G2.DAL.pdb
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.DAL\obj\Debug\net8.0\ref\Grad_Project_G2.DAL.dll

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Grad_Project_G2.UI.props" />
+</Project>

@@ -1,0 +1,15 @@
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\bin\Debug\net8.0\Grad_Project_G2.BLL.deps.json
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\bin\Debug\net8.0\Grad_Project_G2.BLL.dll
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\bin\Debug\net8.0\Grad_Project_G2.BLL.pdb
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\bin\Debug\net8.0\Grad_Project_G2.DAL.dll
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\bin\Debug\net8.0\Grad_Project_G2.DAL.pdb
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Project_G2.BLL.csproj.AssemblyReference.cache
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Project_G2.BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Project_G2.BLL.AssemblyInfoInputs.cache
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Project_G2.BLL.AssemblyInfo.cs
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Project_G2.BLL.csproj.CoreCompileInputs.cache
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Pro.47F42695.Up2Date
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Project_G2.BLL.dll
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\refint\Grad_Project_G2.BLL.dll
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\Grad_Project_G2.BLL.pdb
+C:\Users\Nvidia\OneDrive\Desktop\iti\Graduation Project\project\Grad_Project_G2\Grad_Project_G2.BLL\obj\Debug\net8.0\ref\Grad_Project_G2.BLL.dll
