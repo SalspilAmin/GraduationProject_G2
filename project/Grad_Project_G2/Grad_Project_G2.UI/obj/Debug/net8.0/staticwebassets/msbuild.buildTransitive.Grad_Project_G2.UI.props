@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\Grad_Project_G2.UI.props" />
-</Project>
