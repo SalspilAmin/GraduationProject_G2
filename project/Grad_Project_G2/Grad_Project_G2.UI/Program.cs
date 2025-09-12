@@ -1,4 +1,7 @@
+using Grad_Project_G2.DAL.Data;
+using Microsoft.EntityFrameworkCore;
 namespace Grad_Project_G2.UI
+
 {
     public class Program
     {
@@ -8,6 +11,9 @@ namespace Grad_Project_G2.UI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            //Add Connection 
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 

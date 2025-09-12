@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Grad_Project_G2.UI.Models;
+using Grad_Project_G2.BLL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Grad_Project_G2.UI.Controllers

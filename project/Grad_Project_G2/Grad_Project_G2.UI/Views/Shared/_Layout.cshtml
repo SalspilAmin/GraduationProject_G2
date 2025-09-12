@@ -45,5 +45,20 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    @using Grad_Project_G2.UI.Helpers
+    @{
+        var tempMessage = TempData.GetMessage();
+    }
+
+    @if (tempMessage != null)
+    {
+        <div class="alert alert-@tempMessage.Value.Type alert-dismissible fade show" role="alert">
+            @tempMessage.Value.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
 </body>
+
 </html>

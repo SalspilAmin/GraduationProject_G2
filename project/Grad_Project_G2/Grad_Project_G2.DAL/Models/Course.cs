@@ -10,7 +10,11 @@ namespace Grad_Project_G2.DAL.Models
     public class Course
     {
         public int Id { get; set; }
+
+        [Required, StringLength(50, MinimumLength = 3)]
         public string Name { get; set; } = String.Empty;
+
+        [Required]
         public string Category { get; set; } = String.Empty;
         public int InstructorId { get; set; }
         public User? Instructor { get; set; }
