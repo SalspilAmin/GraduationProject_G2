@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Grad_Project_G2.DAL.Models;
+using Grad_Project_G2.DAL.Repositories.Interface;
 
-namespace Grad_Project_G2.DAL.Repositories.Interface
+public interface ISessionRepository : IGenericRepository<Session>
 {
-    public interface ISessionRepository
-    {
-    }
+    Task<IEnumerable<Session>> GetSessionsWithCourseAsync();
+    Task<IEnumerable<Session>> SearchByCourseNameAsync(string courseName);
 }
+

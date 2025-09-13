@@ -18,9 +18,14 @@ namespace Grad_Project_G2.UI
             //Add Connection 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped<ISessionService, SessionService>();
 
             var app = builder.Build();
 

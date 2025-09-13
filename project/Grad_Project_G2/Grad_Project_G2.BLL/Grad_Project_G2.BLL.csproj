@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\GradeViewModel\" />
-    <Folder Include="ViewModels\SessionViewModel\" />
   </ItemGroup>
 
 </Project>

@@ -32,6 +32,7 @@ namespace Grad_Project_G2.BLL.Services
                 Category = vm.Category,
                 InstructorId = vm.InstructorId
             };
+            
 
             _unitOfWork.Courses.Add(course);
             _unitOfWork.Save();

@@ -1,0 +1,18 @@
+﻿@model Grad_Project_G2.BLL.ViewModels.SessionViewModel
+@{
+    ViewData["Title"] = "Delete Session";
+}
+
+<h2>Are you sure you want to delete this session?</h2>
+
+<div>
+    <p>CourseId: @Model.CourseId</p>
+    <p>StartDate: @Model.StartDate.ToShortDateString()</p>
+    <p>EndDate: @Model.EndDate.ToShortDateString()</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

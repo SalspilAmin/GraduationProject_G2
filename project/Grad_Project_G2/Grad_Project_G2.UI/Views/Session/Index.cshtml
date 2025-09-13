@@ -1,0 +1,71 @@
+﻿@model Grad_Project_G2.BLL.ViewModels.PagedResult<Grad_Project_G2.BLL.ViewModels.SessionViewModel>
+@{
+    ViewData["Title"] = "Sessions";
+}
+
+
+<h2>Sessions</h2>
+
+<form asp-action="Index" method="get" class="d-flex mb-3">
+    <input type="text" name="search" value="@ViewBag.SearchTerm" class="form-control me-2" 
+           placeholder="Search by course name" style="max-width: 300px;" />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+<a asp-action="Create" class="btn btn-success">Create New Session</a>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>SessionId</th>
+            <th>CourseName</th>
+            <th>StartDate</th>
+            <th>EndDate</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var session in Model.Items)
+        {
+                    <tr>
+                        <td>@session.Id</td>
+                        <td>@session.CourseName</td>
+                        <td>@session.StartDate.ToString("yyyy-MM-dd hh:mm tt")</td>
+                        <td>@session.EndDate.ToString("yyyy-MM-dd hh:mm tt")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@session.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Edit" asp-route-id="@session.Id" class="btn btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@session.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+        }
+
+
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, search = ViewBag.SearchTerm })">Previous</a>
+        </li>
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i, search = ViewBag.SearchTerm })">@i</a>
+                </li>
+        }
+
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, search = ViewBag.SearchTerm })">Next</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="text-center mt-3">
+    <small class="text-muted">
+        Page @Model.PageNumber of @Model.TotalPages (@Model.TotalItems total sessions)
+    </small>
+</div>

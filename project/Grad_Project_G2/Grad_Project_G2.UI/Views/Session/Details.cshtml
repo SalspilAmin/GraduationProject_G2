@@ -1,0 +1,15 @@
+﻿@model Grad_Project_G2.BLL.ViewModels.SessionViewModel
+@{
+    ViewData["Title"] = "Details Session";
+}
+
+<h2>Session @Model.Id</h2>
+
+<div>
+    <p>CourseId: @Model.CourseId</p>
+    <p>CourseName: @Model.CourseName</p>
+    <p>StartDate: @Model.StartDate.ToShortDateString()</p>
+    <p>EndDate: @Model.EndDate.ToShortDateString()</p>
+</div>
+
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>

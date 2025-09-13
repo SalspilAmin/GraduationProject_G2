@@ -13,6 +13,8 @@ namespace Grad_Project_G2.DAL.Repositories.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext context;
+        private ISessionRepository? sessionRepository;
+
 
         private IGenericRepository<Course>? courses;
         private IGenericRepository<Session>? sessions;
@@ -28,7 +30,7 @@ namespace Grad_Project_G2.DAL.Repositories.UnitOfWork
 
         public ICourseRepository Courses => (ICourseRepository)(courses ??  new CourseRepository(context));
 
-        public ISessionRepository Sessions => throw new NotImplementedException();
+        public ISessionRepository Sessions => sessionRepository ??= new SessionRepository(context);
 
         public IUserRepository Users => users ??= new UserRepository(context);
 
