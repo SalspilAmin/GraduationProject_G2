@@ -26,7 +26,7 @@ namespace Grad_Project_G2.DAL.Repositories.UnitOfWork
 
         }
 
-        public ICourseRepository Courses => throw new NotImplementedException();
+        public ICourseRepository Courses => (ICourseRepository)(courses ??  new CourseRepository(context));
 
         public ISessionRepository Sessions => throw new NotImplementedException();
 
