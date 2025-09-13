@@ -1,4 +1,8 @@
+using Grad_Project_G2.BLL.Services;
+using Grad_Project_G2.BLL.Services.Interfaces;
 using Grad_Project_G2.DAL.Data;
+using Grad_Project_G2.DAL.Repositories.Interface;
+using Grad_Project_G2.DAL.Repositories.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 namespace Grad_Project_G2.UI
 
@@ -14,6 +18,8 @@ namespace Grad_Project_G2.UI
             //Add Connection 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ICourseService, CourseService>();
 
             var app = builder.Build();
 

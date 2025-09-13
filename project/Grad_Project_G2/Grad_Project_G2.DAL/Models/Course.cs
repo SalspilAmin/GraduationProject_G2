@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Grad_Project_G2.DAL.Models
 {
+    public enum Category
+    {
+        Fundamentals,
+        DotNet
+    }
     public class Course
     {
         public int Id { get; set; }
@@ -15,9 +21,10 @@ namespace Grad_Project_G2.DAL.Models
         public string Name { get; set; } = String.Empty;
 
         [Required]
-        public string Category { get; set; } = String.Empty;
+        public Category Category { get; set; }
+        [ForeignKey("Instructor")]
         public int InstructorId { get; set; }
         public User? Instructor { get; set; }
-        public ICollection<Session>? Sessions { get; set; } = new HashSet<Session>();
+        public ICollection<Session>? Sessions { get; set; }
     }
 }
