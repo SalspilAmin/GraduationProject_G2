@@ -19,7 +19,6 @@
     <Folder Include="ViewModels\CourseViewModel\" />
     <Folder Include="ViewModels\GradeViewModel\" />
     <Folder Include="ViewModels\SessionViewModel\" />
-    <Folder Include="ViewModels\UserViewModel\" />
   </ItemGroup>
 
 </Project>

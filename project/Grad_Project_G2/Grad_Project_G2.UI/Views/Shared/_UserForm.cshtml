@@ -1,0 +1,27 @@
+﻿@model Grad_Project_G2.BLL.ViewModels.UserViewModel.BaseUserVM
+
+<div class="form-group">
+    <label asp-for="FirstName"></label>
+    <input asp-for="FirstName" class="form-control" />
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="LastName"></label>
+    <input asp-for="LastName" class="form-control" />
+    <span asp-validation-for="LastName" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Email"></label>
+    <input asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Role"></label>
+    <select asp-for="Role" asp-items="Html.GetEnumSelectList<Grad_Project_G2.BLL.Enums.UserRole>()" class="form-control">
+        <option value="">-- Select Role --</option>
+    </select>
+    <span asp-validation-for="Role" class="text-danger"></span>
+</div>

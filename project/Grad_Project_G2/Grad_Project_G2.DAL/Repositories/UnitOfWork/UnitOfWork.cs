@@ -16,7 +16,7 @@ namespace Grad_Project_G2.DAL.Repositories.UnitOfWork
 
         private IGenericRepository<Course>? courses;
         private IGenericRepository<Session>? sessions;
-        private IGenericRepository<User>? users;
+        private IUserRepository? users;
         private IGenericRepository<Grade>? grades;
 
         public UnitOfWork(AppDbContext context)
@@ -30,7 +30,7 @@ namespace Grad_Project_G2.DAL.Repositories.UnitOfWork
 
         public ISessionRepository Sessions => throw new NotImplementedException();
 
-        public IUserRepository Users => throw new NotImplementedException();
+        public IUserRepository Users => users ??= new UserRepository(context);
 
         public IGradeRepository Grades => throw new NotImplementedException();
 
