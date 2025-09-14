@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Grad_Project_G2.BLL.ViewModels
@@ -13,12 +14,14 @@ namespace Grad_Project_G2.BLL.ViewModels
 
         [Required(ErrorMessage = "Start Date is required")]
         [DataType(DataType.DateTime)]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "End Date is required")]
         [DataType(DataType.DateTime)]
         [CompareDate("StartDate", ErrorMessage = "End date must be after start date")]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate { get; set; } = DateTime.Now;
+        public List<SelectListItem>? Courses { get; set; }
+
     }
 
     // Custom Validation Attribute

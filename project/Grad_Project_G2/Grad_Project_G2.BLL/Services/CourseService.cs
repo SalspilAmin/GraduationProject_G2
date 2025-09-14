@@ -3,25 +3,28 @@ using Grad_Project_G2.BLL.ViewModels;
 using Grad_Project_G2.BLL.ViewModels.CourseViewModel;
 using Grad_Project_G2.DAL.Models;
 using Grad_Project_G2.DAL.Repositories.Interface;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Grad_Project_G2.BLL.Services
 {
     public class CourseService : ICourseService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CourseService(IUnitOfWork UOW)
+
+        public CourseService(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = UOW;
+            _unitOfWork = unitOfWork;
         }
-        public bool CourseNameExsists(string name,int?id)
+
+        public bool CourseNameExsists(string name, int? id)
         {
-            return(_unitOfWork.Courses.isNameExsists(name,id));
+            return _unitOfWork.Courses.isNameExsists(name, id);
+        }
+
+        public string GetInsName(int id)
+        {
+            return _unitOfWork.Courses.GetInsName(id);
         }
 
         public void CreateCourse(CourseViewModel vm)
@@ -32,15 +35,8 @@ namespace Grad_Project_G2.BLL.Services
                 Category = vm.Category,
                 InstructorId = vm.InstructorId
             };
-            
 
             _unitOfWork.Courses.Add(course);
-            _unitOfWork.Save();
-        }
-
-        public void DeleteCourse(int id)
-        {
-            _unitOfWork.Courses.Delete(id);
             _unitOfWork.Save();
         }
 
@@ -48,9 +44,18 @@ namespace Grad_Project_G2.BLL.Services
         {
             var course = _unitOfWork.Courses.GetById(vm.Id);
             if (course == null) return;
+
             course.Name = vm.Name;
             course.Category = vm.Category;
             course.InstructorId = vm.InstructorId;
+
+            _unitOfWork.Courses.Update(course);
+            _unitOfWork.Save();
+        }
+
+        public void DeleteCourse(int id)
+        {
+            _unitOfWork.Courses.Delete(id);
             _unitOfWork.Save();
         }
 
@@ -63,9 +68,7 @@ namespace Grad_Project_G2.BLL.Services
             {
                 Id = course.Id,
                 Name = course.Name,
-
                 Category = course.Category,
-
                 InstructorName = _unitOfWork.Courses.GetInsName(course.InstructorId)
             };
         }
@@ -84,8 +87,7 @@ namespace Grad_Project_G2.BLL.Services
             };
         }
 
-        public PagedResult<CourseViewModel> GetCoursesWithPagination(
-            int page, int pageSize, string? courseName = null, string? category = null)
+        public PagedResult<CourseViewModel> GetCoursesWithPagination(int page, int pageSize, string courseName = null, string category = null)
         {
             var courses = _unitOfWork.Courses
                 .GetCoursesWithFilters(page, pageSize, courseName, category)
@@ -94,7 +96,7 @@ namespace Grad_Project_G2.BLL.Services
                     Id = c.Id,
                     Name = c.Name,
                     Category = c.Category,
-                    InstructorName = _unitOfWork.Courses.GetInsName(c.InstructorId)
+                    InstructorName = (c.Instructor != null ? c.Instructor.FirstName + " " + c.Instructor.LastName : "No instructor") // 🟢 نستخدم Include
                 })
                 .ToList();
 
@@ -107,7 +109,16 @@ namespace Grad_Project_G2.BLL.Services
             };
         }
 
-
-
+        public List<CourseViewModel> GetAllCourses()
+        {
+            return _unitOfWork.Courses.GetAll()
+                .Select(c => new CourseViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Category = c.Category,
+                    InstructorName = (c.Instructor != null ? c.Instructor.FirstName + " " + c.Instructor.LastName : "No instructor") // 🟢 هنا كمان
+                }).ToList();
+        }
     }
 }

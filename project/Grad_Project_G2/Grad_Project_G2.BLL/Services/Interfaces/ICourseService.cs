@@ -18,5 +18,7 @@ namespace Grad_Project_G2.BLL.Services.Interfaces
         void EditCourse(CourseViewModel vm);
         void DeleteCourse(int id);
         bool CourseNameExsists(string name,int?id);
+        List<CourseViewModel> GetAllCourses();
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Grad_Project_G2.BLL.Services;
+using Grad_Project_G2.BLL.Services.Interfaces;
 using Grad_Project_G2.BLL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +8,13 @@ namespace Grad_Project_G2.UI.Controllers
     public class SessionController : Controller
     {
         private readonly ISessionService _sessionService;
+        private readonly ICourseService _courseService;
 
-        public SessionController(ISessionService sessionService)
+        public SessionController(ISessionService sessionService, ICourseService courseService)
         {
             _sessionService = sessionService;
+            _courseService = courseService;
+
         }
 
         // GET: Session/Index
@@ -36,7 +40,9 @@ namespace Grad_Project_G2.UI.Controllers
         // GET: Session/Create
         public IActionResult Create()
         {
-            return View();
+            var vm = new SessionViewModel();
+            PopulateCourses(vm);
+            return View(vm);
         }
 
         // POST: Session/Create
@@ -50,6 +56,8 @@ namespace Grad_Project_G2.UI.Controllers
                 TempData["Success"] = "Session created successfully!";
                 return RedirectToAction(nameof(Index));
             }
+
+            PopulateCourses(vm);
             return View(vm);
         }
 
@@ -60,6 +68,7 @@ namespace Grad_Project_G2.UI.Controllers
             if (session == null)
                 return NotFound();
 
+            PopulateCourses(session);
             return View(session);
         }
 
@@ -74,6 +83,8 @@ namespace Grad_Project_G2.UI.Controllers
                 TempData["Success"] = "Session updated successfully!";
                 return RedirectToAction(nameof(Index));
             }
+
+            PopulateCourses(vm);
             return View(vm);
         }
 
@@ -95,6 +106,18 @@ namespace Grad_Project_G2.UI.Controllers
             _sessionService.DeleteSession(id);
             TempData["Success"] = "Session deleted successfully!";
             return RedirectToAction(nameof(Index));
+
         }
+        private void PopulateCourses(SessionViewModel vm)
+        {
+            vm.Courses = _courseService.GetAllCourses()
+       .Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+       {
+           Value = c.Id.ToString(),
+           Text = c.Name
+       })
+       .ToList();
+        }
+
     }
 }

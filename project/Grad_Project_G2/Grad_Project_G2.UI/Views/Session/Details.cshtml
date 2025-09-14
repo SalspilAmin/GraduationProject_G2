@@ -1,15 +1,20 @@
 ﻿@model Grad_Project_G2.BLL.ViewModels.SessionViewModel
+
 @{
-    ViewData["Title"] = "Details Session";
+    ViewData["Title"] = "Session Details";
 }
 
-<h2>Session @Model.Id</h2>
+<h2>Session Details</h2>
 
-<div>
-    <p>CourseId: @Model.CourseId</p>
-    <p>CourseName: @Model.CourseName</p>
-    <p>StartDate: @Model.StartDate.ToShortDateString()</p>
-    <p>EndDate: @Model.EndDate.ToShortDateString()</p>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Course: @Model.CourseName</h4>
+        <p><strong>Start Date:</strong> @Model.StartDate.ToString("yyyy-MM-dd HH:mm")</p>
+        <p><strong>End Date:</strong> @Model.EndDate.ToString("yyyy-MM-dd HH:mm")</p>
+    </div>
 </div>
 
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
