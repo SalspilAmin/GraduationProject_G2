@@ -1,0 +1,74 @@
+﻿@model Grad_Project_G2.BLL.ViewModels.PagedResult<Grad_Project_G2.BLL.ViewModels.GradeViewModel>
+
+@{
+    ViewData["Title"] = "Grades";
+}
+
+<h2>Grades</h2>
+
+<form method="get" asp-action="Index" class="mb-3">
+    <input type="text" name="search" value="@ViewData["Search"]" placeholder="Search by trainee..." class="form-control d-inline w-25" />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Trainee</th>
+            <th>Session</th>
+            <th>Value</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Items != null && Model.Items.Any())
+    {
+        foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.TraineeName</td>
+                <td>@item.SessionName</td>
+                <td>@item.Value</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">No grades found.</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Create New Grade</a>
+
+<hr />
+
+<!-- Pagination controls -->
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-search="@ViewData["Search"]">Previous</a>
+            </li>
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-pageIndex="@i" asp-route-search="@ViewData["Search"]">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-search="@ViewData["Search"]">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

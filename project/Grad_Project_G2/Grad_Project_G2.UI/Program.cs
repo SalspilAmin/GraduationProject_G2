@@ -21,6 +21,7 @@ namespace Grad_Project_G2.UI
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IGradeService, GradeService>();
 
             var app = builder.Build();
 

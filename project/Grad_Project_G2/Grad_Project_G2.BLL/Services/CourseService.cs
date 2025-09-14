@@ -82,7 +82,24 @@ namespace Grad_Project_G2.BLL.Services
                 InstructorId = course.InstructorId
             };
         }
-
+        public IEnumerable<Course> GetAllCourses()
+        {
+            return _unitOfWork.Courses.GetAll();
+        }
+        public async Task<List<CourseViewModel>> GetAllCoursesAsync()
+        {
+            return await Task.Run(() =>
+                _unitOfWork.Courses.GetAll()
+                .Select(c => new CourseViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Category = c.Category,
+                    InstructorName = _unitOfWork.Courses.GetInsName(c.InstructorId)
+                })
+                .ToList()
+            );
+        }
         public PagedResult<CourseViewModel> GetCoursesWithPagination(
             int page, int pageSize, string? courseName = null, string? category = null)
         {
