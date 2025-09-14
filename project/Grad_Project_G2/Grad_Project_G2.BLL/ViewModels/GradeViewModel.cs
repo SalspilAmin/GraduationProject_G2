@@ -24,7 +24,8 @@ namespace Grad_Project_G2.BLL.ViewModels
         public string? SessionName { get; set; }
         public string? TraineeName { get; set; }
 
-        public SelectList? Sessions { get; set; }
-        public SelectList? Trainees { get; set; }
+
+        public IEnumerable<SelectListItem>? Sessions { get; set; }
+        public IEnumerable<SelectListItem>? Trainees { get; set; }
     }
 }

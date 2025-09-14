@@ -17,9 +17,7 @@ namespace Grad_Project_G2.DAL.Models
         public DateTime EndDate { get; set; }
         [Required]
         public int CourseId { get; set; }
-        [Required]
-        public string Name { get; set; }
-
+        
         public Course? Course { get; set; }
         public ICollection<Grade>? Grades { get; set; } = new HashSet<Grade>();
     }
