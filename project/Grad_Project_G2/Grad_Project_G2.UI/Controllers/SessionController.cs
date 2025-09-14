@@ -1,16 +1,21 @@
 ﻿using Grad_Project_G2.BLL.Services;
 using Grad_Project_G2.BLL.ViewModels;
+using Grad_Project_G2.DAL.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Grad_Project_G2.UI.Controllers
 {
     public class SessionController : Controller
     {
         private readonly ISessionService _sessionService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public SessionController(ISessionService sessionService)
+
+        public SessionController(ISessionService sessionService , IUnitOfWork unitOfWork)
         {
             _sessionService = sessionService;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Session/Index
@@ -36,7 +41,15 @@ namespace Grad_Project_G2.UI.Controllers
         // GET: Session/Create
         public IActionResult Create()
         {
-            return View();
+            ViewBag.Courses = _unitOfWork.Courses.GetAll()
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+                .ToList();
+
+            return View(new SessionViewModel());
         }
 
         // POST: Session/Create
@@ -50,6 +63,14 @@ namespace Grad_Project_G2.UI.Controllers
                 TempData["Success"] = "Session created successfully!";
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Courses = _unitOfWork.Courses.GetAll()
+            .Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                 Text = c.Name
+             })
+              .ToList();
             return View(vm);
         }
 
@@ -59,6 +80,17 @@ namespace Grad_Project_G2.UI.Controllers
             var session = _sessionService.GetSessionById(id);
             if (session == null)
                 return NotFound();
+
+            ViewBag.Courses = _unitOfWork.Courses.GetAll()
+                .Select(c => new SelectListItem
+                    {
+                       Value = c.Id.ToString(),
+                       Text = c.Name,
+                       Selected = (c.Id == session.CourseId) 
+                    })
+                      .ToList();
+
+
 
             return View(session);
         }
@@ -74,6 +106,18 @@ namespace Grad_Project_G2.UI.Controllers
                 TempData["Success"] = "Session updated successfully!";
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Courses = _unitOfWork.Courses.GetAll()
+                            .Select(c => new SelectListItem
+                                {
+                                   Value = c.Id.ToString(),
+                                  Text = c.Name,
+                                  Selected = (c.Id == vm.CourseId)
+                                })
+                             .ToList();
+
+
+
             return View(vm);
         }
 

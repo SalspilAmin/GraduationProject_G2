@@ -8,8 +8,8 @@
 <div>
     <p>CourseId: @Model.CourseId</p>
     <p>CourseName: @Model.CourseName</p>
-    <p>StartDate: @Model.StartDate.ToShortDateString()</p>
-    <p>EndDate: @Model.EndDate.ToShortDateString()</p>
+    <p>StartDate: @Model.StartDate.ToString("yyyy-MM-dd hh:mm tt")</p>
+    <p>EndDate: @Model.EndDate.ToString("yyyy-MM-dd hh:mm tt")</p>
 </div>
 
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>

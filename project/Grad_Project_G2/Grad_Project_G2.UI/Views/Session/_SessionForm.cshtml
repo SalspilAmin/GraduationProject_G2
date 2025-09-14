@@ -1,19 +1,28 @@
 ﻿@model Grad_Project_G2.BLL.ViewModels.SessionViewModel
 
 <div class="form-group">
-    <label asp-for="CourseId"></label>
-    <input asp-for="CourseId" class="form-control" />
+    <label asp-for="CourseName"></label>
+    <select asp-for="CourseId" asp-items="ViewBag.Courses" class="form-control">
+        <option value="">-- Select Course --</option>
+    </select>
     <span asp-validation-for="CourseId" class="text-danger"></span>
 </div>
 
 <div class="mb-3">
     <label asp-for="StartDate" class="form-label"></label>
-    <input asp-for="StartDate" type="datetime-local" class="form-control" />
+    <input asp-for="StartDate"
+           type="datetime-local"
+           class="form-control"
+           value="@(Model.StartDate == DateTime.MinValue ? "" : Model.StartDate.ToString("yyyy-MM-ddTHH:mm"))" />
     <span asp-validation-for="StartDate" class="text-danger"></span>
 </div>
 
 <div class="mb-3">
     <label asp-for="EndDate" class="form-label"></label>
-    <input asp-for="EndDate" type="datetime-local" class="form-control" />
+    <input asp-for="EndDate"
+           type="datetime-local"
+           class="form-control"
+           value="@(Model.EndDate == DateTime.MinValue ? "" : Model.EndDate.ToString("yyyy-MM-ddTHH:mm"))" />
     <span asp-validation-for="EndDate" class="text-danger"></span>
 </div>
+
