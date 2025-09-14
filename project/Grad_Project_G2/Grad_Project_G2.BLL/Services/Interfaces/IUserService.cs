@@ -13,5 +13,7 @@ namespace Grad_Project_G2.BLL.Services.Interfaces
         void Update(EditUserVM vm);
         void Delete(int id);
         bool EmailExists(string email, int? excludeId = null);
+        List<UserVM> GetAllTrainees();
+
     }
 }
