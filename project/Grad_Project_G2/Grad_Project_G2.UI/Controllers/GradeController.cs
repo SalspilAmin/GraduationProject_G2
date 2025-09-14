@@ -1,117 +1,231 @@
-﻿using Grad_Project_G2.BLL.Services;
-using Grad_Project_G2.DAL.Models;
+﻿using Grad_Project_G2.DAL.Models;
+using Grad_Project_G2.BLL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Grad_Project_G2.DAL.Data;
 
-namespace Grad_Project_G2.UI.Controllers
+namespace Grad_Project_G2.Controllers
 {
     public class GradeController : Controller
     {
-        private readonly GradeService _gradeService;
+        private readonly AppDbContext _context;
 
-        public GradeController(GradeService gradeService)
+        public GradeController(AppDbContext context)
         {
-            _gradeService = gradeService;
+            _context = context;
         }
 
-        // GET: Grades
-        public async Task<IActionResult> Index(string? search, int pageIndex = 1)
+        // ========================
+        // Index
+        // ========================
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            int pageSize = 10;
+            var grades = await _context.Grades
+                .Include(g => g.Session)
+                .Include(g => g.Trainee)
+                .ToListAsync();
 
-            var grades = await _gradeService.GetGradesAsync(search, pageIndex, pageSize);
+            var gradeViewModels = grades.Select(g => new GradeViewModel
+            {
+                Id = g.Id,
+                Value = g.Value,
+                SessionId = g.SessionId,
+                TraineeId = g.TraineeId,
+                TraineeName = g.Trainee?.FirstName
+            }).ToList();
 
-            ViewData["Search"] = search;
+            var pagedResult = new PagedResult<GradeViewModel>
+            {
+                Items = gradeViewModels.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
+                TotalItems = gradeViewModels.Count,
+                PageNumber = page,
+                PageSize = pageSize
+            };
 
-            return View(grades);
+            return View(pagedResult);
         }
-
-        // GET: Grades/Details/5
+        // ========================
+        // Details
+        // ========================
         public async Task<IActionResult> Details(int id)
         {
-            var grade = await _gradeService.GetGradeByIdAsync(id);
-            if (grade == null)
-            {
-                return NotFound();
-            }
-            return View(grade);
-        }
+            var grade = await _context.Grades
+                .Include(g => g.Session)
+                .Include(g => g.Trainee)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-        // GET: Grades/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+            if (grade == null) return NotFound();
 
-        // POST: Grades/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Grade grade)
-        {
-            if (ModelState.IsValid)
-            {
-                await _gradeService.AddGradeAsync(grade);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(grade);
-        }
-
-        // GET: Grades/Edit/5
-        public async Task<IActionResult> Edit(int id)
-        {
-            var grade = await _gradeService.GetGradeByIdAsync(id);
-            if (grade == null)
-            {
-                return NotFound();
-            }
-
-            // Convert ViewModel back to Entity if needed
-            var gradeEntity = new Grade
+            var model = new GradeViewModel
             {
                 Id = grade.Id,
                 Value = grade.Value,
+                SessionId = grade.SessionId,
+                TraineeId = grade.TraineeId,
+                TraineeName = grade.Trainee?.FirstName
             };
 
-            return View(gradeEntity);
+            return View(model);
         }
 
-        // POST: Grades/Edit/5
+        // ========================
+        // Create GET
+        // ========================
+        public IActionResult Create()
+        {
+
+            var model = new GradeViewModel
+            {
+                Sessions = _context.Sessions
+                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
+                    .ToList(),
+                Trainees = _context.Users
+                    .Where(u => u.Role == UserRole.Trainee)
+                    .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
+                    .ToList()
+            };
+
+            return View(model);
+        }
+
+        // ========================
+        // Create POST
+        // ========================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Grade grade)
+        public async Task<IActionResult> Create(GradeViewModel model)
         {
-            if (id != grade.Id)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var grade = new Grade
+                {
+                    Value = model.Value,
+                    SessionId = model.SessionId,
+                    TraineeId = model.TraineeId
+                };
+
+                _context.Grades.Add(grade);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
+
+            model.Sessions = _context.Sessions
+                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
+                .ToList();
+            model.Trainees = _context.Users
+                .Where(u => u.Role == UserRole.Trainee)
+                .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
+                .ToList();
+
+            return View(model);
+        }
+
+        // ========================
+        // Edit GET
+        // ========================
+        public async Task<IActionResult> Edit(int id)
+        {
+            var grade = await _context.Grades.FindAsync(id);
+            if (grade == null) return NotFound();
+
+            var model = new GradeViewModel
+            {
+                Id = grade.Id,
+                Value = grade.Value,
+                SessionId = grade.SessionId,
+                TraineeId = grade.TraineeId,
+                Sessions = _context.Sessions
+                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
+                    .ToList(),
+                Trainees = _context.Users
+                    .Where(u => u.Role == UserRole.Trainee)
+                    .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
+                    .ToList()
+            };
+
+            return View(model);
+        }
+
+        // ========================
+        // Edit POST
+        // ========================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, GradeViewModel model)
+        {
+            if (id != model.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                await _gradeService.UpdateGradeAsync(grade);
+                try
+                {
+                    var grade = await _context.Grades.FindAsync(id);
+                    if (grade == null) return NotFound();
+
+                    grade.Value = model.Value;
+                    grade.SessionId = model.SessionId;
+                    grade.TraineeId = model.TraineeId;
+
+                    _context.Update(grade);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Grades.Any(e => e.Id == model.Id))
+                        return NotFound();
+                    else
+                        throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(grade);
+
+            model.Sessions = _context.Sessions
+                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
+                .ToList();
+            model.Trainees = _context.Users
+                .Where(u => u.Role == UserRole.Trainee)
+                .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
+                .ToList();
+
+            return View(model);
         }
 
-        // GET: Grades/Delete/5
+        // ========================
+        // Delete GET
+        // ========================
         public async Task<IActionResult> Delete(int id)
         {
-            var grade = await _gradeService.GetGradeByIdAsync(id);
-            if (grade == null)
-            {
-                return NotFound();
-            }
+            var grade = await _context.Grades
+                .Include(g => g.Session)
+                .Include(g => g.Trainee)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-            return View(grade);
+            if (grade == null) return NotFound();
+
+            var model = new GradeViewModel
+            {
+                Id = grade.Id,
+                Value = grade.Value,
+                TraineeName = grade.Trainee?.FirstName
+            };
+
+            return View(model);
         }
 
-        // POST: Grades/Delete/5
+        // ========================
+        // Delete POST
+        // ========================
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _gradeService.DeleteGradeAsync(id);
+            var grade = await _context.Grades.FindAsync(id);
+            if (grade == null) return NotFound();
+
+            _context.Grades.Remove(grade);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }
-
 }

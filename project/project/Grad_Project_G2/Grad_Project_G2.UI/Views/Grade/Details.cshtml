@@ -1,0 +1,23 @@
+﻿@model Grad_Project_G2.BLL.ViewModels.GradeViewModel
+
+<h2>Grade Details</h2>
+
+<div>
+    <h4>Grade</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Trainee</dt>
+        <dd class="col-sm-10">@Model.TraineeName</dd>
+
+        <dt class="col-sm-2">Session</dt>
+        <dd class="col-sm-10">@Model.SessionName</dd>
+
+        <dt class="col-sm-2">Value</dt>
+        <dd class="col-sm-10">@Model.Value</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
