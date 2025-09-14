@@ -2,9 +2,8 @@
 @using Grad_Project_G2.DAL.Models
 @model PagedResult<CourseViewModel>
 
-<h2>All Courses</h2>
+<h2>Courses</h2>
 
-<a asp-action="Create" class="btn-primary mb-3">Create New Course</a>
 
 <form method="get" asp-controller="Course" asp-action="Index">
     <input type="text" name="courseName" placeholder="Search by Name" />
@@ -17,7 +16,7 @@
         }
     </select>
 
-    <button type="submit">Search</button>
+    <button class="btn btn-primary" type="submit">Search</button>
 </form>
 
 <table class="table table-bordered">
@@ -45,7 +44,7 @@
         }
     </tbody>
 </table>
-
+<a asp-action="Create" class="btn btn-success">Create New Course</a>
 <div>Page : @Model.PageNumber of @Model.TotalPages</div>
 @if (Model.TotalPages > 1)
 {

@@ -1,8 +1,50 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-5">
+    <h1 class="fw-bold">Welcome to School Management System</h1>
+    <p class="lead text-muted">Manage Courses, Sessions, Users, and Grades all in one place</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold">Courses</h5>
+                <p class="card-text text-muted">Create, view, and manage courses.</p>
+                <a href="@Url.Action("Index","Course")" class="btn btn-primary w-100">Go to Courses</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold">Grades</h5>
+                <p class="card-text text-muted">Track and manage student grades.</p>
+                <a href="@Url.Action("Index","Grade")" class="btn btn-success w-100">Go to Grades</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold">Sessions</h5>
+                <p class="card-text text-muted">Organize and monitor sessions.</p>
+                <a href="@Url.Action("Index","Session")" class="btn btn-warning w-100">Go to Sessions</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold">Users</h5>
+                <p class="card-text text-muted">Manage system users and roles.</p>
+                <a href="@Url.Action("Index","User")" class="btn btn-danger w-100">Go to Users</a>
+            </div>
+        </div>
+    </div>
 </div>
