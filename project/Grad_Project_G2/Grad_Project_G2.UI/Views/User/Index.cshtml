@@ -7,10 +7,10 @@
 
 <h2>Users</h2>
 
-@if (TempData["Success"] != null)
+@if (TempData["UserSuccess"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["Success"]
+        @TempData["UserSuccess"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
