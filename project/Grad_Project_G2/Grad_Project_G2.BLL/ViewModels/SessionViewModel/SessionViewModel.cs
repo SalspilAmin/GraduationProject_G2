@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Grad_Project_G2.BLL.ViewModels
 {
@@ -18,42 +19,10 @@ namespace Grad_Project_G2.BLL.ViewModels
 
         [Required(ErrorMessage = "End Date is required")]
         [DataType(DataType.DateTime)]
-        [CompareDate("StartDate", ErrorMessage = "End date must be after start date")]
+        [Remote(action: "ValidateEndDate", controller: "Session", AdditionalFields = nameof(StartDate), ErrorMessage = "End date must be after start date.")]
         public DateTime EndDate { get; set; }
 
 
     }
 
-    // Custom Validation Attribute
-    public class CompareDate : ValidationAttribute
-    {
-        private readonly string _comparisonProperty;
-
-        public CompareDate(string comparisonProperty)
-        {
-            _comparisonProperty = comparisonProperty;
-        }
-
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var currentValue = (DateTime?)value;
-
-            var property = validationContext.ObjectType.GetProperty(_comparisonProperty);
-            if (property == null)
-                throw new ArgumentException("Property with this name not found");
-
-            var comparisonValue = (DateTime?)property.GetValue(validationContext.ObjectInstance);
-
-            if (currentValue.HasValue && comparisonValue.HasValue)
-            {
-                // Compare full DateTime (date + time)
-                if (currentValue.Value <= comparisonValue.Value)
-                {
-                    return new ValidationResult(ErrorMessage ?? $"{validationContext.DisplayName} must be after {_comparisonProperty}");
-                }
-            }
-
-            return ValidationResult.Success;
-        }
-    }
 }

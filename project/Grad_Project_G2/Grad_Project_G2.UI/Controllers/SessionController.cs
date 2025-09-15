@@ -140,5 +140,17 @@ namespace Grad_Project_G2.UI.Controllers
             TempData["Success"] = "Session deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult ValidateEndDate(DateTime EndDate, DateTime StartDate)
+        {
+            if (EndDate <= StartDate)
+            {
+                return Json("End date must be after start date.");
+            }
+
+            return Json(true);
+        }
+
     }
 }
