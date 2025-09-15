@@ -22,6 +22,7 @@ namespace Grad_Project_G2.UI.Controllers
         public IActionResult Index(int page = 1, int pageSize = 5, string? courseName = null, string? category = null)
         {
             var res = _courseService.GetCoursesWithPagination(page, pageSize, courseName, category);
+            ViewBag.Category = category;
             return View(res);
         }
         public IActionResult Details(int id)
@@ -48,6 +49,7 @@ namespace Grad_Project_G2.UI.Controllers
             if(ModelState.IsValid)
             {
                 _courseService.CreateCourse(courseVm);
+                TempData["SuccessMessage"] = "Course created successfully!";
                 return RedirectToAction("Index");
             }
             ViewBag.Instructors = new SelectList(
@@ -79,6 +81,7 @@ namespace Grad_Project_G2.UI.Controllers
             if(ModelState.IsValid)
             {
                 _courseService.EditCourse(CourseVm);
+                TempData["SuccessMessage"] = "Course updated successfully!";
                 return RedirectToAction("Index");
             }
             ViewBag.Instructors = new SelectList(
@@ -99,7 +102,8 @@ namespace Grad_Project_G2.UI.Controllers
         [HttpPost,ActionName("Delete")]//to write delete asp-action <3 
         public IActionResult DeleteConfirmed(int id)
         {
-            _courseService.DeleteCourse(id); 
+            _courseService.DeleteCourse(id);
+            TempData["SuccessMessage"] = "Course deleted successfully!";
             return RedirectToAction("Index");
         }
         //name is uniqe (Remote)

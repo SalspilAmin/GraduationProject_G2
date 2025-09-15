@@ -3,6 +3,14 @@
 @model PagedResult<CourseViewModel>
 
 <h2>Courses</h2>
+<div class="container mt-3">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div id="feedback-message" class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+</div>
 
 
 <form method="get" asp-controller="Course" asp-action="Index">
@@ -15,7 +23,7 @@
         <option value="">All Categories</option>
         @foreach (var category in Enum.GetValues(typeof(Category)))
         {
-            <option value="@category">@category</option>
+         <option value="@category" selected="@(ViewBag.Category?.ToString() == category.ToString())">@category</option>
         }
     </select>
         </div>
@@ -68,4 +76,15 @@
             <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)">Next</a>
         </li>
     </ul>
+}
+@section Scripts {
+    <script>
+
+        setTimeout(function () {
+            let msg = document.getElementById("feedback-message");
+            if (msg) {
+                msg.classList.remove("show");
+            }
+        }, 2000);
+    </script>
 }
