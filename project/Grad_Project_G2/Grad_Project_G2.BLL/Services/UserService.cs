@@ -79,9 +79,23 @@ namespace Grad_Project_G2.BLL.Services
 
         public void Delete(int id)
         {
+            var user = _unit.Users.GetById(id);
+
+            if (user == null) return;
+
+            // Check if user is a trainee and has grades
+            if (user.Role == UserRole.Trainee && user.Grades?.Any() == true)
+            {
+                //Delete all grade to this trainee
+                foreach (var grade in user.Grades.ToList())
+                {
+                    _unit.Grades.Delete(grade.Id);
+                }
+            }
             _unit.Users.Delete(id);
             _unit.Save();
         }
+
 
         public bool EmailExists(string email, int? excludeId = null)
         {
@@ -89,12 +103,12 @@ namespace Grad_Project_G2.BLL.Services
             return user != null && user.Id != excludeId;
         }
         public List<UserVM> GetAllTrainees()
-            {
+        {
             return _unit.Users
-    .GetAll()
-    .Where(u => u.Role == UserRole.Trainee)
-    .Select(u => new UserVM(u))
-    .ToList();
+                        .GetAll()
+                        .Where(u => u.Role == UserRole.Trainee)
+                        .Select(u => new UserVM(u))
+                        .ToList();
         }
     }
 }

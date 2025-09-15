@@ -13,13 +13,12 @@ namespace Grad_Project_G2.DAL.Repositories.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext context;
-        private ISessionRepository? sessionRepository;
 
 
-        private IGenericRepository<Course>? courses;
-        private IGenericRepository<Session>? sessions;
+        private ICourseRepository? courses;
+        private ISessionRepository? sessions;
         private IUserRepository? users;
-        private IGenericRepository<Grade>? grades;
+        private IGradeRepository? grades;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -28,13 +27,13 @@ namespace Grad_Project_G2.DAL.Repositories.UnitOfWork
 
         }
 
-        public ICourseRepository Courses => (ICourseRepository)(courses ??  new CourseRepository(context));
+        public ICourseRepository Courses => courses ??  new CourseRepository(context);
 
-        public ISessionRepository Sessions => sessionRepository ??= new SessionRepository(context);
+        public ISessionRepository Sessions => sessions ??= new SessionRepository(context);
 
         public IUserRepository Users => users ??= new UserRepository(context);
 
-        public IGradeRepository Grades => throw new NotImplementedException();
+        public IGradeRepository Grades => grades ??= new GradeRepository(context);
 
 
 
