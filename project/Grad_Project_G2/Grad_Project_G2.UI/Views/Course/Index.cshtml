@@ -6,17 +6,23 @@
 
 
 <form method="get" asp-controller="Course" asp-action="Index">
-    <input type="text" name="courseName" placeholder="Search by Name" />
-
-    <select name="category">
+    <div class="row">
+        <div class="col-md-4">
+    <input type="text" name="courseName" class="form-control" placeholder="Search by Name" />
+        </div>
+        <div class="col-md-3">
+    <select name="category"class="form-control">
         <option value="">All Categories</option>
         @foreach (var category in Enum.GetValues(typeof(Category)))
         {
             <option value="@category">@category</option>
         }
     </select>
-
+        </div>
+        <div class="col-md-2">
     <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
 </form>
 
 <table class="table table-bordered">

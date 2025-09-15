@@ -25,7 +25,7 @@ namespace Grad_Project_G2.DAL.Repositories
         public string GetInsName(int id)
         {
             var ins= _context.Users.FirstOrDefault(u => u.Id == id);
-            var name=(ins?.FirstName+ins?.LastName)??"No instructor";
+            var name=(ins?.FirstName+" "+ins?.LastName)??"No instructor";
             return name;
         }
 
