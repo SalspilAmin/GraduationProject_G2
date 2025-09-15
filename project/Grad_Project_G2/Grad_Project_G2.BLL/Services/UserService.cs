@@ -3,6 +3,7 @@ using Grad_Project_G2.BLL.ViewModels;
 using Grad_Project_G2.BLL.ViewModels.UserViewModel;
 using Grad_Project_G2.DAL.Models;
 using Grad_Project_G2.DAL.Repositories.Interface;
+using Grad_Project_G2.DAL.Repositories.UnitOfWork;
 
 namespace Grad_Project_G2.BLL.Services
 {
@@ -86,6 +87,14 @@ namespace Grad_Project_G2.BLL.Services
         {
             var user = _unit.Users.GetByEmail(email);
             return user != null && user.Id != excludeId;
+        }
+        public List<UserVM> GetAllTrainees()
+            {
+            return _unit.Users
+    .GetAll()
+    .Where(u => u.Role == UserRole.Trainee)
+    .Select(u => new UserVM(u))
+    .ToList();
         }
     }
 }

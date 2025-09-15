@@ -1,39 +1,51 @@
-﻿using Grad_Project_G2.DAL.Models;
+﻿using Grad_Project_G2.BLL.Services;
+using Grad_Project_G2.BLL.Services.Interfaces;
 using Grad_Project_G2.BLL.ViewModels;
+using Grad_Project_G2.DAL.Data;
+using Grad_Project_G2.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Grad_Project_G2.DAL.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Grad_Project_G2.Controllers
 {
     public class GradeController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ISessionService _sessionService;
+        private readonly IUserService _userService;
 
-        public GradeController(AppDbContext context)
+        public GradeController(AppDbContext context, ISessionService sessionService, IUserService userService)
         {
             _context = context;
+            _sessionService = sessionService;
+            _userService = userService;
         }
 
         // ========================
         // Index
         // ========================
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string? search, int page = 1, int pageSize = 10)
         {
             var grades = await _context.Grades
                 .Include(g => g.Session)
                 .Include(g => g.Trainee)
                 .ToListAsync();
 
-            var gradeViewModels = grades.Select(g => new GradeViewModel
-            {
-                Id = g.Id,
-                Value = g.Value,
-                SessionId = g.SessionId,
-                TraineeId = g.TraineeId,
-                TraineeName = g.Trainee?.FirstName
-            }).ToList();
+            var gradeViewModels = grades
+                .Where(g => string.IsNullOrEmpty(search) || g.Trainee.FirstName.Contains(search))
+                .Select(g => new GradeViewModel
+                {
+                    Id = g.Id,
+                    Value = g.Value,
+                    SessionId = g.SessionId,
+                    TraineeId = g.TraineeId,
+                    SessionName = g.Session?.StartDate.ToString("yyyy-MM-dd HH:mm"),
+                    TraineeName = g.Trainee?.FirstName + " " + g.Trainee?.LastName
+                })
+                .ToList();
 
             var pagedResult = new PagedResult<GradeViewModel>
             {
@@ -43,8 +55,10 @@ namespace Grad_Project_G2.Controllers
                 PageSize = pageSize
             };
 
+            ViewData["Search"] = search;
             return View(pagedResult);
         }
+
         // ========================
         // Details
         // ========================
@@ -53,7 +67,7 @@ namespace Grad_Project_G2.Controllers
             var grade = await _context.Grades
                 .Include(g => g.Session)
                 .Include(g => g.Trainee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(g => g.Id == id);
 
             if (grade == null) return NotFound();
 
@@ -63,7 +77,8 @@ namespace Grad_Project_G2.Controllers
                 Value = grade.Value,
                 SessionId = grade.SessionId,
                 TraineeId = grade.TraineeId,
-                TraineeName = grade.Trainee?.FirstName
+                SessionName = grade.Session?.StartDate.ToString("yyyy-MM-dd HH:mm"),
+                TraineeName = grade.Trainee?.FirstName + " " + grade.Trainee?.LastName
             };
 
             return View(model);
@@ -74,18 +89,8 @@ namespace Grad_Project_G2.Controllers
         // ========================
         public IActionResult Create()
         {
-
-            var model = new GradeViewModel
-            {
-                Sessions = _context.Sessions
-                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
-                    .ToList(),
-                Trainees = _context.Users
-                    .Where(u => u.Role == UserRole.Trainee)
-                    .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
-                    .ToList()
-            };
-
+            var model = new GradeViewModel();
+            PopulateDropdowns(model);
             return View(model);
         }
 
@@ -110,14 +115,7 @@ namespace Grad_Project_G2.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            model.Sessions = _context.Sessions
-                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
-                .ToList();
-            model.Trainees = _context.Users
-                .Where(u => u.Role == UserRole.Trainee)
-                .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
-                .ToList();
-
+            PopulateDropdowns(model);
             return View(model);
         }
 
@@ -134,16 +132,10 @@ namespace Grad_Project_G2.Controllers
                 Id = grade.Id,
                 Value = grade.Value,
                 SessionId = grade.SessionId,
-                TraineeId = grade.TraineeId,
-                Sessions = _context.Sessions
-                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
-                    .ToList(),
-                Trainees = _context.Users
-                    .Where(u => u.Role == UserRole.Trainee)
-                    .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
-                    .ToList()
+                TraineeId = grade.TraineeId
             };
 
+            PopulateDropdowns(model);
             return View(model);
         }
 
@@ -158,36 +150,20 @@ namespace Grad_Project_G2.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var grade = await _context.Grades.FindAsync(id);
-                    if (grade == null) return NotFound();
+                var grade = await _context.Grades.FindAsync(id);
+                if (grade == null) return NotFound();
 
-                    grade.Value = model.Value;
-                    grade.SessionId = model.SessionId;
-                    grade.TraineeId = model.TraineeId;
+                grade.Value = model.Value;
+                grade.SessionId = model.SessionId;
+                grade.TraineeId = model.TraineeId;
 
-                    _context.Update(grade);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Grades.Any(e => e.Id == model.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
+                _context.Update(grade);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
 
-            model.Sessions = _context.Sessions
-                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.StartDate.ToString() })
-                .ToList();
-            model.Trainees = _context.Users
-                .Where(u => u.Role == UserRole.Trainee)
-                .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.FirstName })
-                .ToList();
-
+            PopulateDropdowns(model);
             return View(model);
         }
 
@@ -199,7 +175,7 @@ namespace Grad_Project_G2.Controllers
             var grade = await _context.Grades
                 .Include(g => g.Session)
                 .Include(g => g.Trainee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(g => g.Id == id);
 
             if (grade == null) return NotFound();
 
@@ -207,7 +183,8 @@ namespace Grad_Project_G2.Controllers
             {
                 Id = grade.Id,
                 Value = grade.Value,
-                TraineeName = grade.Trainee?.FirstName
+                SessionName = grade.Session?.StartDate.ToString("yyyy-MM-dd HH:mm"),
+                TraineeName = grade.Trainee?.FirstName + " " + grade.Trainee?.LastName
             };
 
             return View(model);
@@ -226,6 +203,29 @@ namespace Grad_Project_G2.Controllers
             _context.Grades.Remove(grade);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // ========================
+        // Helper: Populate Dropdowns
+        // ========================
+        private void PopulateDropdowns(GradeViewModel vm)
+        {
+            vm.Sessions = _sessionService.GetAllSessions(null, 1, 100)
+                .Items
+                .Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.StartDate.ToString("yyyy-MM-dd HH:mm")
+                })
+                .ToList();
+
+            vm.Trainees = _userService.GetAllTrainees()
+                .Select(t => new SelectListItem
+                {
+                    Value = t.Id.ToString(),
+                    Text = t.FullName
+                })
+                .ToList();
         }
     }
 }
