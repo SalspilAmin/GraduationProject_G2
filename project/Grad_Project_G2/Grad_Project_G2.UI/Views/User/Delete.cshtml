@@ -15,6 +15,12 @@
             <strong>Note:</strong> Deleting this trainee will also delete all of their grades.
         </div>
     }
+    @if ((int)Model.Role == (int)UserRole.Instructor)
+    {
+        <div class="alert alert-warning">
+            <strong>Note:</strong> Deleting this instructor will also delete all of their courses and sessions.
+        </div>
+    }
 
 </div>
 
