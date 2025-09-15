@@ -27,7 +27,7 @@ namespace Grad_Project_G2.DAL.Data
                 .HasOne(c => c.Instructor)
                 .WithMany(u => u.Courses)
                 .HasForeignKey(c => c.InstructorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<Session>()

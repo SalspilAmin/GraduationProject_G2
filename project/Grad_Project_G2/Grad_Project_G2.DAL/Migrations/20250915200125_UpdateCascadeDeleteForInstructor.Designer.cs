@@ -4,6 +4,7 @@ using Grad_Project_G2.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Grad_Project_G2.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250915200125_UpdateCascadeDeleteForInstructor")]
+    partial class UpdateCascadeDeleteForInstructor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace Grad_Project_G2.DAL.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("Grad_Project_G2.DAL.Models.Grade", b =>
@@ -71,7 +74,7 @@ namespace Grad_Project_G2.DAL.Migrations
 
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("Grades", (string)null);
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("Grad_Project_G2.DAL.Models.Session", b =>
@@ -95,7 +98,7 @@ namespace Grad_Project_G2.DAL.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Sessions", (string)null);
+                    b.ToTable("Sessions");
                 });
 
             modelBuilder.Entity("Grad_Project_G2.DAL.Models.User", b =>
@@ -128,7 +131,7 @@ namespace Grad_Project_G2.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Grad_Project_G2.DAL.Models.Course", b =>
