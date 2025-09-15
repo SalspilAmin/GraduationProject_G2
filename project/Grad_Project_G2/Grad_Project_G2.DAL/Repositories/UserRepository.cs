@@ -59,5 +59,14 @@ namespace Grad_Project_G2.DAL.Repositories
             return query.Count();
         }
 
+        public new User? GetById(int id)
+        {
+            return _context.Users
+                .Include(u => u.Grades)
+                .FirstOrDefault(u => u.Id == id);
+        }
+
+
+
     }
 }

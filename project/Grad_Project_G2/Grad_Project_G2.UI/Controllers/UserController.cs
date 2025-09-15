@@ -38,7 +38,7 @@ namespace Grad_Project_G2.UI.Controllers
                 return View(vm);
 
             _userService.Create(vm);
-            TempData["Success"] = "User created successfully!";
+            TempData["UserSuccess"] = "User created successfully!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -68,7 +68,7 @@ namespace Grad_Project_G2.UI.Controllers
                 return View(vm);
 
             _userService.Update(vm);
-            TempData["Success"] = "User updated successfully!";
+            TempData["UserSuccess"] = "User updated successfully!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -81,18 +81,23 @@ namespace Grad_Project_G2.UI.Controllers
             var vm = new DeleteUserVM
             {
                 Id = user.Id,
-                FullName = user.FullName
+                FullName = user.FullName,
+                FirstName = user.FullName.Split(' ')[0],
+                LastName = user.FullName.Split(' ').Length > 1 ? user.FullName.Split(' ')[1] : "",
+                Email = user.Email,
+                Role = user.Role
             };
 
             return View(vm);
         }
+
 
         // POST: User/Delete
         [HttpPost, ActionName("Delete")]
         public IActionResult ConfirmDelete(int id)
         {
             _userService.Delete(id);
-            TempData["Success"] = "User deleted successfully!";
+            TempData["UserSuccess"] = "User deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 
