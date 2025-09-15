@@ -13,9 +13,11 @@
     <input asp-for="StartDate"
            type="datetime-local"
            class="form-control"
-           value="@(Model.StartDate == DateTime.MinValue ? "" : Model.StartDate.ToString("yyyy-MM-ddTHH:mm"))" />
-    <span asp-validation-for="StartDate" class="text-danger"></span>
+           id="StartDate"
+           min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+    <span asp-validation-for="StartDate" id="StartDateError" class="text-danger"></span>
 </div>
+
 
 <div class="mb-3">
     <label asp-for="EndDate" class="form-label"></label>
@@ -26,3 +28,20 @@
     <span asp-validation-for="EndDate" class="text-danger"></span>
 </div>
 
+<script>
+    const startInput = document.getElementById("StartDate");
+    const errorSpan = document.getElementById("StartDateError");
+
+    startInput.addEventListener("input", function () {
+        const startDate = new Date(this.value);
+        const now = new Date();
+
+        if (this.value && startDate < now) {
+            errorSpan.textContent = "Start Date cannot be in the past!";
+            this.classList.add("is-invalid"); 
+        } else {
+            errorSpan.textContent = "";
+            this.classList.remove("is-invalid");
+        }
+    });
+</script>
