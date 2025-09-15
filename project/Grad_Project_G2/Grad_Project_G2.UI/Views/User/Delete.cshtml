@@ -8,6 +8,14 @@
 
 <div>
     <h4>Are you sure you want to delete <strong>@Model.FullName</strong>?</h4>
+
+    @if ((int)Model.Role == (int)UserRole.Trainee)
+    {
+        <div class="alert alert-warning">
+            <strong>Note:</strong> Deleting this trainee will also delete all of their grades.
+        </div>
+    }
+
 </div>
 
 <form asp-action="Delete">
